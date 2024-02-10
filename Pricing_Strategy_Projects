@@ -1,0 +1,59 @@
+
+SQL queries help us retrieve data, and view data, and other database-related actions (CRUD). In this scenario, I give an example of queries that revolve around data analysis for decision support, performance monitoring, and optimization efforts.
+
+#Analyzing Pricing Performance: This query could be used to analyze the average, minimum, and maximum prices of products over a specified time period.
+
+SELECT product_id, avg(price) AS average_price, min(price) AS minimum_price, max(price) AS maximum_price
+FROM pricing_data
+WHERE date BETWEEN '2023-01-01' AND '2023-12-31'
+GROUP BY product_id;
+
+
+
+#Identifying Pricing Trends Over Time: This query helps in monitoring the pricing trends for different products over time.
+
+SELECT date, product_id, avg(price) AS average_price
+FROM pricing_data
+GROUP BY date, product_id
+ORDER BY date ASC;
+
+
+
+#Evaluating Price Optimization Impact:This query assesses the impact of price optimization efforts by comparing prices before and after optimization.
+
+SELECT a.product_id, a.pre_optimization_price, b.post_optimization_price, (b.post_optimization_price - a.pre_optimization_price) / a.pre_optimization_price * 100 AS price_change_percentage
+FROM pre_optimization_data a
+JOIN post_optimization_data b ON a.product_id = b.product_id;
+
+
+
+#Tracking Project Progress and Deadlines: This query could be used to monitor ongoing projects, focusing on their statuses and adherence to deadlines.
+
+SELECT project_id, project_name, status, estimated_completion_date, actual_completion_date
+FROM projects
+WHERE status NOT IN ('Completed', 'Cancelled')
+ORDER BY estimated_completion_date ASC;
+
+#Assessing Cross-Functional Team Contributions: This query provides insights into the contributions of different teams to projects, measuring both team size and effort.
+
+SELECT project_id, team_id, count(distinct employee_id) AS team_size, sum(hours_worked) AS total_hours
+FROM project_contributions
+GROUP BY project_id, team_id;
+
+#Identifying Opportunities for Process Improvement:This query identifies processes that are significantly longer than average, highlighting areas for potential improvement.
+
+SELECT process_id, avg(duration) AS average_process_duration, stddev(duration) AS process_duration_stddev
+FROM process_logs
+WHERE date BETWEEN '2023-01-01' AND '2023-12-31'
+GROUP BY process_id
+HAVING avg(duration) > (SELECT avg(duration) FROM process_logs) * 1.5;
+
+
+
+#Monitoring User Engagement with Pricing Tools:This query could be utilized to monitor how frequently different pricing tools are used and the average engagement time, helping to assess tool effectiveness and user satisfaction.
+
+SELECT tool_id, count(distinct user_id) AS unique_users, avg(session_duration) AS average_session_duration
+FROM tool_usage_logs
+GROUP BY tool_id;
+
+
